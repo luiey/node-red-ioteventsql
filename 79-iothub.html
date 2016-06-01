@@ -1,0 +1,194 @@
+<!--
+  Copyright 2013,2014 IBM Corp.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/x-red" data-template-name="IoThub SendEvent">
+    <div class="form-row">
+        <label for="node-input-hubinfo"><i class="fa fa-globe"></i> Hub Info</label>
+        <input type="text" id="node-input-hubinfo" placeholder="">
+    </div>
+    <div class="form-row">
+        <label for="node-input-deviceid"><i class="fa fa-tag"></i> Device ID</label>
+        <input type="text" id="node-input-deviceid" placeholder="">
+    </div>
+    <div class="form-row">
+        <label for="node-input-hubenabledstate"><i class="fa fa-tag"></i>Enable Status</label>
+        <select type="text" id="node-input-hubenabledstate" placeholder="">
+            <option value="1">Enable</option>
+            <option value="0">Disable</option>
+        </select>
+    </div>
+    <div class="form-row" style="display: none;">
+        <label for="node-input-isadvanced"><i class="fa fa-tag"></i></label>
+        <input type="text" id="node-input-isadvanced" placeholder="" >
+    </div>
+
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-useAdv" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-useAdv" style="width: 70%;"><span>Advanced</span></label>
+    </div>
+    <div class="form-row node-input-useAdv-row">
+        <label for="node-input-manufacturer"><i class="fa fa-tag"></i>Manufacturer</label>
+        <input type="text" id="node-input-manufacturer" placeholder="">
+    </div>
+    <div class="form-row node-input-useAdv-row">
+        <label for="node-input-modelnumber"><i class="fa fa-tag"></i> Model Number</label>
+        <input type="text" id="node-input-modelnumber" placeholder="">
+    </div>
+    
+    <div class="form-row node-input-useAdv-row">
+        <label for="node-input-serialnumber"><i class="fa fa-tag"></i> Serial Number</label>
+        <input type="text" id="node-input-serialnumber" placeholder="">
+    </div>
+    <div class="form-row node-input-useAdv-row">
+        <label for="node-input-firmwareversion"><i class="fa fa-tag"></i> Firmware Version</label>
+        <input type="text" id="node-input-firmwareversion" placeholder="">
+    </div>
+    <div class="form-row node-input-useAdv-row">
+        <label for="node-input-platform"><i class="fa fa-tag"></i> Platform</label>
+        <input type="text" id="node-input-platform" placeholder="">
+    </div>
+    <div class="form-row node-input-useAdv-row">
+        <label for="node-input-processor"><i class="fa fa-tag"></i> Processor</label>
+        <input type="text" id="node-input-processor" placeholder="">
+    </div>
+    <div class="form-row node-input-useAdv-row">
+        <label for="node-input-latitude"><i class="fa fa-tag"></i> Latitude</label>
+        <input type="text" id="node-input-latitude" placeholder="">
+    </div>
+    <div class="form-row node-input-useAdv-row">
+        <label for="node-input-longitude"><i class="fa fa-tag"></i> Longitude</label>
+        <input type="text" id="node-input-longitude" placeholder="">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('IoThub SendEvent',{
+        category: 'Azure',
+        color:"#72b0cf",
+        defaults: {
+            hubinfo             : { type:"hubinfo", required:true },
+            deviceid            : { value:"", required:true },
+            hubenabledstate     : { value:"", required:true },
+            name                : { value:"" },
+            isadvanced          : { value:"" },
+            manufacturer        : { value:"" },
+            modelnumber         : { value:"" },
+            serialnumber        : { value:"" },
+            firmwareversion    : { value:"" },
+            platform            : { value:"" },
+            processor           : { value:"" },
+            latitude            : { value:"" },
+            longitude           : { value:"" },
+
+
+
+        },
+        inputs:1,
+        outputs:1,
+        icon: "iothub.png",
+        label: function() {
+            return this.name||this.name||"IoThub SendEvent";
+        },
+        labelStyle: function() {
+            return (this.name||!this.topic)?"node_label_italic":"";
+        },
+        oneditprepare: function() {
+            console.log($('#node-input-isadvanced').val());
+            if ($('#node-input-isadvanced').val() == 1) {
+                $(".node-input-useAdv-row").show();
+                $("#node-input-useAdv").prop('checked', true);
+            } else {
+                $(".node-input-useAdv-row").hide();
+                $("#node-input-useAdv").prop('checked', false);
+            }
+            $("#node-input-useAdv").change(function() {
+                if ($(this).is(":checked")) {                    
+                    $(".node-input-useAdv-row").show();
+                    $('#node-input-isadvanced').val(1)
+                } else {
+                    $(".node-input-useAdv-row").hide();
+                    $("#node-input-useAdv").prop('checked', false);
+                    $('#node-input-isadvanced').val(0)
+                }
+                console.log($("#node-input-useAdv").prop('checked'));
+            });
+
+           
+        }
+        
+    });
+</script>
+
+<script type="text/x-red" data-template-name="IoThub ReceiveMessage">
+    <div class="form-row">
+        <label for="node-input-hubinfo"><i class="fa fa-globe"></i> Hub Information</label>
+        <input type="text" id="node-input-hubinfo" placeholder="">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('IoThub ReceiveMessage',{
+        category: 'Azure',
+        color:"#72b0cf",
+        defaults: {
+            hubinfo: {type:"hubinfo",required:true},
+            name: {value:""}
+        },
+        inputs:0,
+        outputs:1,
+        icon: "iothub.png",
+        label: function() {
+            return this.name||this.name||"IoThub ReceiveMessage";
+        },
+        labelStyle: function() {
+            return (this.name||!this.topic)?"node_label_italic":"";
+        }
+        
+    });
+</script>
+
+<script type="text/x-red" data-template-name="hubinfo">
+    <div class="form-row">
+        <label for="node-config-input-connstr"><i class="fa fa-tag"></i> Connection String</label>
+        <input type="text" id="node-config-input-connstr" placeholder="connstr">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-hubname"><i class="fa fa-tag"></i> Hub Name</label>
+        <input type="text" id="node-config-input-hubname" placeholder="">
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('hubinfo',{
+        category: 'config',
+        defaults: {
+            connstr: { value:"", required:true },
+            hubname: { value:"", required:true }
+        },
+        label: function() {
+            return this.hubname;
+        }
+    });
+</script>

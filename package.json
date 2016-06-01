@@ -1,0 +1,59 @@
+{
+  "name": "node-mssql",
+  "version": "0.0.1",
+  "description": "A Node-RED node for MSSQL",
+  "dependencies": {
+  },
+  "repository": {
+  },
+  "license": "Apache",
+  "keywords": [
+    "node-red",
+    "mssql"
+  ],
+  "node-red": {
+    "nodes": {
+      "mssql": "77-mssql.js"
+    }
+  }
+}
+
+{
+  "name": "node-eventhub",
+  "version": "0.0.1",
+  "description": "A Node-RED node for Event Hub",
+  "dependencies": {
+  },
+  "repository": {
+  },
+  "license": "Apache",
+  "keywords": [
+    "node-red",
+    "eventhub"
+  ],
+  "node-red": {
+    "nodes": {
+      "eventhub": "78-eventhub.js"
+    }
+  }
+}
+
+{
+  "name": "node-iothub",
+  "version": "0.0.1",
+  "description": "A Node-RED node for IOT Hub",
+  "dependencies": {
+  },
+  "repository": {
+  },
+  "license": "Apache",
+  "keywords": [
+    "node-red",
+    "iothub"
+  ],
+  "node-red": {
+    "nodes": {
+      "iothub": "79-iothub.js"
+    }
+  }
+}

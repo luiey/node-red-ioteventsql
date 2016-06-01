@@ -1,0 +1,97 @@
+<!--
+  Copyright 2013,2014 IBM Corp.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<script type="text/x-red" data-template-name="mssqlserver">
+    <div class="form-row">
+        <label for="node-config-input-host"><i class="fa fa-globe"></i> Host</label>
+        <input type="text" id="node-config-input-host" style="width:40%;"> Port<input type="text" id="node-config-input-port" placeholder="1433" style="width:50px;">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-encrypt"><i class="fa fa-database"></i> Azure/Local</label>
+        <select type="text" id="node-config-input-encrypt" style="width:60%;">
+            <option value="1">Azure</option>
+            <option value="0">Local</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-db"><i class="fa fa-database"></i> DB Name</label>
+        <input type="text" id="node-config-input-db">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-sqluser"><i class="fa fa-user"></i> User</label>
+        <input type="text" id="node-config-input-sqluser">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-sqlpwd"><i class="fa fa-lock"></i> Password</label>
+        <input type="password" id="node-config-input-sqlpwd">
+    </div>
+    
+    
+    
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('mssqlserver',{
+        category: 'config',
+        defaults: {
+            host: {value:"", required: true},
+            port: {value:"1433", required: true},
+            db: {value:"", required: true}, 
+            encrypt: {value:"1"}
+        },
+        credentials: {
+            sqluser: {type: "text"},
+            sqlpwd: {type: "password"}
+        },
+        label: function() {
+            return this.db;
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="mssql">
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-tag"></i> Server</label>
+        <input type="text" id="node-input-server" placeholder="Server">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="mssql">
+    <p>This node can write your query in msg.query to access mssql databaes in Azure or local.</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('mssql',{
+        category: 'Azure',
+        color:"#72b0cf",
+        defaults: {
+            server: {type:"mssqlserver", required:true},
+            name: {value:""},
+        },
+        inputs:1,
+        outputs:1,
+        icon: "SqlAzure.png",
+        label: function() {
+            return this.dname||this.name||"mssql";
+        },
+        labelStyle: function() {
+            return (this.dname||!this.topic)?"node_label_italic":"";
+        }
+    });
+</script>
